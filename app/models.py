@@ -1,0 +1,35 @@
+from . import db
+from datetime import datetime
+
+class User(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+
+    reservations = db.relationship('Reservation', backref='user', lazy=True)
+
+class Parkinglot(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    location_name=db.Column(db.String(100), nullable=False)
+    address=db.Column(db.String(200), nullable=False)
+    pin_code = db.Column(db.String(6), nullable=False)
+    price_per_hour = db.Column(db.Float, nullable=False)
+    max_spots = db.Column(db.Integer, nullable=False)
+
+    spots = db.relationship('ParkingSpot', backref='lot', lazy=True)
+
+class Parkingspot(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    lot_id=db.Column(db.Integer,db.ForeignKey('parkinglot.id'),nullable=False)
+    status = db.Column(db.String(1), default='A') 
+
+    reservation = db.relationship('Reservation', backref='spot', uselist=False)
+
+
+class Reservation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    spot_id = db.Column(db.Integer, db.ForeignKey('parkingspot.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    start_time = db.Column(db.DateTime, default=datetime.utcnow,nullable=False)
+    end_time = db.Column(db.DateTime)
+    cost = db.Column(db.Float)
