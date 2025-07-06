@@ -3,8 +3,11 @@ from datetime import datetime
 
 class User(db.Model):
     id=db.Column(db.Integer,primary_key=True)
+    full_name = db.Column(db.String(100), nullable=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=True)
     password = db.Column(db.String(100), nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
 
     reservations = db.relationship('Reservation', backref='user', lazy=True)
 
@@ -16,7 +19,7 @@ class Parkinglot(db.Model):
     price_per_hour = db.Column(db.Float, nullable=False)
     max_spots = db.Column(db.Integer, nullable=False)
 
-    spots = db.relationship('ParkingSpot', backref='lot', lazy=True)
+    spots = db.relationship('Parkingspot', backref='lot', lazy=True)
 
 class Parkingspot(db.Model):
     id=db.Column(db.Integer,primary_key=True)
