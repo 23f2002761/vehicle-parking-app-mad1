@@ -15,4 +15,8 @@ def create_app():
      
      from app.routes.dashboard_routes import dashboard_bp
      app.register_blueprint(dashboard_bp)
+
+     from app.routes.admin_routes import admin_bp
+     app.register_blueprint(admin_bp)
+     
      return app
