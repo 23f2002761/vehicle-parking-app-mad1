@@ -26,7 +26,7 @@ class Parkingspot(db.Model):
     lot_id=db.Column(db.Integer,db.ForeignKey('parkinglot.id'),nullable=False)
     status = db.Column(db.String(1), default='A') 
 
-    reservation = db.relationship('Reservation', backref='spot', uselist=False)
+    reservations = db.relationship('Reservation', backref='spot', lazy=True)
 
 
 class Reservation(db.Model):
@@ -35,4 +35,5 @@ class Reservation(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     start_time = db.Column(db.DateTime, default=datetime.utcnow,nullable=False)
     end_time = db.Column(db.DateTime)
+    status = db.Column(db.String(20), default='active')
     cost = db.Column(db.Float)

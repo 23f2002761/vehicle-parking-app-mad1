@@ -4,6 +4,7 @@ __pycache__/
 
 # Virtual environment
 venv/
+.venv/
 
 # Environment variables
 .env
@@ -21,3 +22,5 @@ instance/
 # OS junk
 .DS_Store
 Thumbs.db
+
+migrations/
