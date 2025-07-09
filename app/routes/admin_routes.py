@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,request,redirect,url_for,flash
-from app.models import db, Parkinglot, Parkingspot,User
+from app.models import db, Parkinglot, Parkingspot,User,Reservation
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -108,3 +108,8 @@ def view_users():
     users = User.query.filter_by(is_admin=False).all()
 
     return render_template('view_users.html', users=users)
+
+@admin_bp.route('/admin/view_reservations')
+def view_all_reservations():
+    reservations = Reservation.query.order_by(Reservation.start_time.desc()).all()
+    return render_template('admi_view_reservation.html', reservations=reservations)
