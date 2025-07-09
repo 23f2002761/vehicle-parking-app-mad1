@@ -123,15 +123,21 @@ def release_spot(reservation_id):
         flash("This reservation is already completed.")
         return redirect(url_for('user.parking_history'))
 
-    # Set end time to now and change status
+    # Set end time to now
     reservation.end_time = datetime.utcnow()
+
+
+    duration_hours = (reservation.end_time - reservation.start_time).total_seconds() / 3600
+    price_per_hour = reservation.spot.lot.price_per_hour
+    cost = round(duration_hours * price_per_hour, 2)
+
+    reservation.cost = cost
     reservation.status = 'completed'
 
     # Free up the parking spot
-    spot = reservation.spot
-    spot.status = 'A'
+    reservation.spot.status = 'A'
 
     db.session.commit()
 
-    flash("Spot released successfully. Thank you!")
+    flash(f"Spot released successfully. Duration: {duration_hours:.2f} hrs | Cost: ₹{cost}")
     return redirect(url_for('user.parking_history'))
