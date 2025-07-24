@@ -4,9 +4,9 @@ dashboard_bp = Blueprint('dashboard', __name__)
 
 @dashboard_bp.route('/admin/dashboard')
 def admin():
-    if not session.get('is_admin'):
-        return redirect(url_for('authentication.login'))
-    return render_template('admin_dashboard.html')
+    if session.get('is_admin'):
+        return render_template('admin_dashboard.html')   
+    return redirect(url_for('authentication.login'))
 
 @dashboard_bp.route('/user/dashboard')
 def user():

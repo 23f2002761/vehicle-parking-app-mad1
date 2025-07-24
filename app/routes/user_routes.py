@@ -30,7 +30,7 @@ def reserve_spot(lot_id):
 
     user = User.query.get(user_id)
     if not user:
-        flash("User not found.")
+        flash("Your session expired or account could not be found. Please log in again or create a new account.")
         return redirect(url_for('authentication.login'))
 
     active_res = Reservation.query.filter_by(user_id=user.id, status='active').first()
@@ -49,7 +49,6 @@ def reserve_spot(lot_id):
     reservation = Reservation(
         user_id=user.id,
         spot_id=available_spot.id,
-        start_time=datetime.utcnow(),
         status='active'
     )
     db.session.add(reservation)
@@ -73,6 +72,10 @@ def occupy_spot(reservation_id):
     if reservation.status != 'active':
         flash("Cannot occupy a reservation that is not active.")
         return redirect(url_for('user.parking_history'))
+    
+    if reservation.start_time:
+        flash("This spot is already occupied.")
+        return redirect(url_for('user.parking_history'))
 
     # Update start_time to now if you want
     reservation.start_time = datetime.utcnow()
@@ -93,16 +96,14 @@ def parking_history():
     history = []
     for res in reservations:
         duration = None
-        cost = None
         if res.end_time:
             delta = res.end_time - res.start_time
             duration = round(delta.total_seconds() / 3600, 2)  # in hours
-            cost = round(duration * res.spot.lot.price_per_hour, 2)
 
         history.append({
             'reservation': res,
             'duration': duration,
-            'cost': cost
+            'cost': res.cost
         })
 
     return render_template('parking_history.html', history=history)
@@ -137,7 +138,7 @@ def release_spot(reservation_id):
     # Free up the parking spot
     reservation.spot.status = 'A'
 
-    db.session.commit()
+    db.session.commit() 
 
     flash(f"Spot released successfully. Duration: {duration_hours:.2f} hrs | Cost: ₹{cost}")
     return redirect(url_for('user.parking_history'))

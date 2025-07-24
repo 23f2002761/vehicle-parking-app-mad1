@@ -5,15 +5,7 @@ admin_bp = Blueprint('admin', __name__)
 
 @admin_bp.route('/admin/dashboard')
 def dashboard():
-    total_lots = Parkinglot.query.count()
-    available_spots = Parkingspot.query.filter_by(status='A').count()
-    occupied_spots = Parkingspot.query.filter_by(status='O').count()
-
-    return render_template('admin_dashboard.html',
-                           total_lots=total_lots,
-                           available_spots=available_spots,
-                           occupied_spots=occupied_spots)
-
+    return render_template('admin_dashboard.html')
 
 @admin_bp.route('/create_lot', methods=['GET', 'POST'])
 def create_lot():
@@ -27,7 +19,7 @@ def create_lot():
         #creating the lot
         lot = Parkinglot(location_name=location_name, address=address, pin_code=pin_code, price_per_hour=price_per_hour, max_spots=max_spots)
         db.session.add(lot)
-        db.session.commit()
+        db.session.flush()
 
          #generating the parking spots 
         for _ in range(max_spots):
@@ -55,26 +47,28 @@ def edit_lot(lot_id):
         lot.pin_code = request.form['pin_code']
         lot.price_per_hour = float(request.form['price_per_hour'])
 
+        if lot.max_spots != int(request.form['max_spots']):
+
         # To change no of max spota if greater than before than add and if less than befor then delete
-        new_max_spots = int(request.form['max_spots'])
-        difference = new_max_spots - lot.max_spots
+            new_max_spots = int(request.form['max_spots'])
+            difference = new_max_spots - lot.max_spots
 
-        if difference > 0:
-            for _ in range(difference):
-                new_spot = Parkingspot(lot_id=lot.id, status='A')
-                db.session.add(new_spot)
+            if difference > 0:
+                for _ in range(difference):
+                    new_spot = Parkingspot(lot_id=lot.id, status='A')
+                    db.session.add(new_spot)
 
-        elif difference < 0:
-            available_spots = Parkingspot.query.filter_by(lot_id=lot.id, status='A').limit(abs(difference)).all()
-            if len(available_spots) < abs(difference):
-                flash('The spots cannot be reduced as the available spots are not enough.')
-                return redirect(url_for('admin.view_lots'))
+            elif difference < 0:
+                available_spots = Parkingspot.query.filter_by(lot_id=lot.id, status='A').limit(abs(difference)).all()
+                if len(available_spots) < abs(difference):
+                    flash('The spots cannot be reduced as the available spots are not enough.')
+                    return redirect(url_for('admin.view_lots'))
 
-            for spot in available_spots:
-                db.session.delete(spot)
+                for spot in available_spots:
+                    db.session.delete(spot)
 
-        lot.max_spots = new_max_spots
-        db.session.commit()
+            lot.max_spots = new_max_spots
+        db.session.commit() 
         flash('The Lot has been updated')
         return redirect(url_for('admin.view_lots'))
 

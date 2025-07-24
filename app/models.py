@@ -33,7 +33,7 @@ class Reservation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     spot_id = db.Column(db.Integer, db.ForeignKey('parkingspot.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    start_time = db.Column(db.DateTime, default=datetime.utcnow,nullable=False)
+    start_time = db.Column(db.DateTime, nullable=True)
     end_time = db.Column(db.DateTime)
     status = db.Column(db.String(20), default='active')
     cost = db.Column(db.Float)
