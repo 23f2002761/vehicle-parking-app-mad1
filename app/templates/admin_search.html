@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Results</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-light">
+    <h3>Search Results for "{{ query }}" in {{ filter_by }}</h3>
+    {% if results %}
+    <table class="table table-bordered">
+      {% if filter_by == 'user' %}
+      <tr>
+        <th>User ID</th>
+        <th>Username</th>
+        <th>Email</th>
+      </tr>
+      {% for user in results %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+      {% endfor %} {% elif filter_by == 'spot' %}
+      <tr>
+        <th>Spot ID</th>
+        <th>Status</th>
+        <th>Lot ID</th>
+      </tr>
+      {% for spot in results %}
+      <tr>
+        <td>{{ spot.id }}</td>
+        <td>{{ spot.status }}</td>
+        <td>{{ spot.lot_id }}</td>
+      </tr>
+      {% endfor %} {% elif filter_by == 'lot' %}
+      <tr>
+        <th>Lot ID</th>
+        <th>Location Name</th>
+        <th>Address</th>
+      </tr>
+      {% for lot in results %}
+      <tr>
+        <td>{{ lot.id }}</td>
+        <td>{{ lot.location_name }}</td>
+        <td>{{ lot.address }}</td>
+      </tr>
+      {% endfor %} {% endif %}
+    </table>
+    {% else %}
+    <p>No results found.</p>
+    {% endif %}
+  </body>
+</html>
