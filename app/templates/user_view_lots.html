@@ -8,55 +8,110 @@
       rel="stylesheet"
     />
   </head>
-  <body class="bg-light">
-    <div class="container mt-5">
-      <h2 class="mb-4 text-center">Available Parking Lots</h2>
-
-      {% if lots %}
-      <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-          <tr>
-            <th>Lot Name</th>
-            <th>Address</th>
-            <th>Price per Hour (₹)</th>
-            <th>Available Spots</th>
-            <th>Total Spots</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for lot in lots %}
-          <tr>
-            <td>{{ lot.location_name }}</td>
-            <td>{{ lot.address }}</td>
-            <td>₹{{ lot.price_per_hour }}</td>
-            <td>{{ lot.available_spots }}</td>
-            <td>{{ lot.total_spots }}</td>
-            <td>
-              <form
-                action="{{ url_for('user.reserve_spot', lot_id=lot.id) }}"
-                method="POST"
-                style="display: inline"
-              >
-                <button type="submit" class="btn btn-primary btn-sm">
-                  Reserve Spot
-                </button>
-              </form>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% else %}
-      <p class="text-center">No parking lots available at the moment.</p>
-      {% endif %}
-      <a
-        href="{{ url_for('user.parking_history') }}"
-        class="btn btn-primary"
-        style="margin-top: 10px"
+  <body class="bg-light d-flex flex-column min-vh-100">
+    <header>
+      <div
+        class="container-fluid d-flex align-items-center pt-4 ps-4 pb-4"
+        style="background-color: var(--bs-gray-200)"
       >
-        View Parking History
-      </a>
-    </div>
+        <img
+          src="{{ url_for('static', filename='logo.png') }}"
+          class="img-fluid"
+          alt="App Logo"
+          style="max-width: 100px; border-radius: 50%"
+        />
+        <div class="ps-2 pt-2">
+          <h2
+            style="
+              color: rgba(23, 1, 21, 0.826);
+              font-family: 'Poppins', sans-serif;
+              font-style: italic;
+            "
+          >
+            ParkPal
+          </h2>
+        </div>
+        <div class="ms-auto">
+          <a
+            href="{{ url_for('dashboard.user') }}"
+            class="btn btn-light me-2 border-dark"
+            >Dashboard
+          </a>
+          <a href="{{ url_for('authentication.logout') }}" class="btn btn-dark"
+            >Logout</a
+          >
+        </div>
+      </div>
+    </header>
+    <main class="flex-grow-1">
+      <div class="container mt-5">
+        <h2 class="mb-4 text-center">Available Parking Lots</h2>
+
+        {% if lots %}
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
+            <tr>
+              <th>Lot Name</th>
+              <th>Address</th>
+              <th>Price per Hour (₹)</th>
+              <th>Available Spots</th>
+              <th>Total Spots</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lot in lots %}
+            <tr>
+              <td>{{ lot.location_name }}</td>
+              <td>{{ lot.address }}</td>
+              <td>₹{{ lot.price_per_hour }}</td>
+              <td>{{ lot.available_spots }}</td>
+              <td>{{ lot.total_spots }}</td>
+              <td>
+                <form
+                  action="{{ url_for('user.reserve_spot', lot_id=lot.id) }}"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    Reserve Spot
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p class="text-center">No parking lots available at the moment.</p>
+        {% endif %}
+
+        <a
+          href="{{ url_for('user.parking_history') }}"
+          class="btn btn-dark"
+          style="margin-top: 10px"
+        >
+          View Parking History
+        </a>
+      </div>
+    </main>
+    <footer class="py-4" style="background-color: rgba(23, 1, 21, 0.533)" ;>
+      <div
+        class="container d-flex justify-content-between align-items-center flex-wrap"
+      >
+        <div>
+          <p class="mb-1">Mail us here:</p>
+          <a
+            href="mailto:parkpal@mail.com"
+            class="text-muted text-decoration-none"
+          >
+            parkpal@mail.com
+          </a>
+        </div>
+        <div class="text-end">
+          <p class="mb-0 text-muted">&copy; 2025 All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

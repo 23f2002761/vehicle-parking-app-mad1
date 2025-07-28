@@ -34,6 +34,7 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password, password):
             session['user_id'] = user.id
+            session['username'] = user.username
             session['is_admin'] = user.is_admin
            #checking wether it is the user or admin 
             if user.is_admin:
@@ -44,3 +45,8 @@ def login():
             flash('Invalid credentials','danger')
     
     return render_template('login.html')
+
+@authentication_bp.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.clear()  # clears all session data (works for admin or user)
+    return redirect(url_for('landing.landing'))  # send them to landing page

@@ -6,47 +6,144 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     />
-  </head>
-  <body>
-    <div class="container mt-4">
-      <h1 class="mb-4">Admin Dashboard</h1>
+    <style>
+      .bubble-text {
+        font-family: "Bubblegum Sans", cursive;
+        font-size: 2rem;
+        color: #2e0532;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 3px solid #310534; /* Cursor effect */
+        width: 0;
+        animation: typing 1.5s steps(20, end) forwards,
+          blink 0.75s step-end infinite;
+      }
 
-      <div class="mb-3">
-        <a href="{{ url_for('admin.create_lot') }}" class="btn btn-success"
-          >Create Parking Lot</a
-        >
-        <a href="{{ url_for('admin.view_lots') }}" class="btn btn-primary"
-          >View All Lots</a
-        >
-        <a href="{{ url_for('admin.view_users') }}" class="btn btn-info"
-          >View Users</a
-        >
-        <a
-          href="{{ url_for('admin.view_all_reservations') }}"
-          class="btn btn-primary"
-        >
-          View All Reservations Summary
-        </a>
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 14ch;
+        } /* Adjust for text length */
+      }
+
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-vh-100 d-flex flex-column">
+    <header>
+      <div
+        class="container-fluid d-flex align-items-center pt-4 ps-4 pb-4"
+        style="background-color: var(--bs-gray-200)"
+      >
+        <img
+          src="{{ url_for('static', filename='logo.png') }}"
+          class="img-fluid"
+          alt="App Logo"
+          style="max-width: 100px; border-radius: 50%"
+        />
+        <div class="ps-2 pt-2">
+          <h2
+            style="
+              color: rgba(23, 1, 21, 0.826);
+              font-family: 'Poppins', sans-serif;
+              font-style: italic;
+            "
+          >
+            ParkPal
+          </h2>
+        </div>
+        <div class="ms-auto">
+          <a href="{{ url_for('authentication.logout') }}" class="btn btn-dark"
+            >Logout</a
+          >
+        </div>
       </div>
-    </div>
-    <form
-      action="{{ url_for('admin.search') }}"
-      method="GET"
-      class="d-flex mb-3"
-    >
-      <input
-        type="text"
-        name="query"
-        class="form-control me-2"
-        placeholder="Search user, lot, or spot..."
-        required
-      />
-      <select name="filter" class="form-select me-2">
-        <option value="user">User</option>
-        <option value="lot">Parking Lot</option>
-        <option value="spot">Parking Spot</option>
-      </select>
-      <button type="submit" class="btn btn-success">Search</button>
-    </form>
+    </header>
+    <main class="flex-grow-1">
+      <div class="container mt-4">
+        <h1 class="bubble-text ps-4">Welcome Admin!</h1>
+
+        <div class="mb-3">
+          <a
+            href="{{ url_for('admin.create_lot') }}"
+            class="btn btn-light border-dark"
+            >Create Parking Lot</a
+          >
+          <a href="{{ url_for('admin.view_lots') }}" class="btn btn-dark"
+            >View All Lots</a
+          >
+          <a
+            href="{{ url_for('admin.view_users') }}"
+            class="btn btn-light border-dark"
+            >View Users</a
+          >
+          <a
+            href="{{ url_for('admin.view_all_reservations') }}"
+            class="btn btn-dark"
+          >
+            View All Reservations Summary
+          </a>
+        </div>
+      </div>
+      <div
+        class="container pt-5 pb-5 d-flex justify-content-center align-items-center"
+      >
+        <div
+          class="border rounded p-2 bg-white shadow-sm"
+          style="width: 100%; max-width: 400px"
+        >
+          <h2 class="mb-4 text-center">Search</h2>
+          <form
+            action="{{ url_for('admin.search') }}"
+            method="GET"
+            class="mb-3"
+          >
+            <div class="mb-3">
+              <label for="details" class="form-label">Enter details</label>
+              <input
+                type="text"
+                name="details"
+                class="form-control me-2"
+                placeholder="user(username) lot(location_name) or spot(spot_id)..."
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="type" class="form-label">Type</label>
+              <select name="type" class="form-select me-2">
+                <option value="user">User</option>
+                <option value="lot">Parking Lot</option>
+                <option value="spot">Parking Spot</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-dark">Search</button>
+          </form>
+        </div>
+      </div>
+    </main>
+    <footer class="py-4" style="background-color: rgba(23, 1, 21, 0.533)" ;>
+      <div
+        class="container d-flex justify-content-between align-items-center flex-wrap"
+      >
+        <div>
+          <p class="mb-1">Mail us here:</p>
+          <a
+            href="mailto:parkpal@mail.com"
+            class="text-muted text-decoration-none"
+          >
+            parkpal@mail.com
+          </a>
+        </div>
+        <div class="text-end">
+          <p class="mb-0 text-muted">&copy; 2025 All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

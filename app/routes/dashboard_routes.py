@@ -12,4 +12,4 @@ def admin():
 def user():
     if session.get('is_admin'):
         return redirect(url_for('dashboard.admin'))
-    return render_template('user_dashboard.html')
+    return render_template('user_dashboard.html',username=session.get('username'))

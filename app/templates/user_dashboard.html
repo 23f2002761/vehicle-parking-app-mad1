@@ -1,15 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
-<body>
-    <h2>Welcome to the User Dashboard</h2>
-    <p>You are logged in as a user.</p>
-    <a href="{{ url_for('user.view_lots') }}" class="btn btn-primary mt-3">View Available Parking Lots</a>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .bubble-text {
+        font-family: "Bubblegum Sans", cursive;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2e0532;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 3px solid #310534; /* Cursor effect */
+        width: 0;
+        animation: typing 1.5s steps(20, end) forwards,
+          blink 0.75s step-end infinite;
+      }
 
-</body>
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 18ch;
+        }
+      }
+
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-light d-flex flex-column min-vh-100">
+    <header>
+      <div
+        class="container-fluid d-flex align-items-center pt-4 ps-4 pb-4"
+        style="background-color: var(--bs-gray-200)"
+      >
+        <img
+          src="{{ url_for('static', filename='logo.png') }}"
+          class="img-fluid"
+          alt="App Logo"
+          style="max-width: 100px; border-radius: 50%"
+        />
+        <div class="ps-2 pt-2">
+          <h2
+            style="
+              color: rgba(23, 1, 21, 0.826);
+              font-family: 'Poppins', sans-serif;
+              font-style: italic;
+            "
+          >
+            ParkPal
+          </h2>
+        </div>
+        <div class="ms-auto">
+          <a
+            href="{{ url_for('admin.dashboard') }}"
+            class="btn btn-light me-2 border-dark"
+            >Dashboard
+          </a>
+          <a href="{{ url_for('authentication.logout') }}" class="btn btn-dark"
+            >Logout</a
+          >
+        </div>
+      </div>
+    </header>
+    <main class="flex-grow-1 ps-5">
+      <div class="mt-5 ps-4">
+        <h1 class="bubble-text ps-4">Welcome {{username}} !</h1>
+        <div class="d-flex gap-3 mt-3">
+          <a
+            href="{{ url_for('user.view_lots') }}"
+            class="btn btn-light border-dark mt-3"
+            >View Available Parking Lots</a
+          >
+          <a
+            href="{{ url_for('user.parking_history') }}"
+            class="btn btn-dark mt-3"
+          >
+            View Parking History
+          </a>
+        </div>
+      </div>
+    </main>
+    <footer class="py-4" style="background-color: rgba(23, 1, 21, 0.533)" ;>
+      <div
+        class="container d-flex justify-content-between align-items-center flex-wrap"
+      >
+        <div>
+          <p class="mb-1">Mail us here:</p>
+          <a
+            href="mailto:parkpal@mail.com"
+            class="text-muted text-decoration-none"
+          >
+            parkpal@mail.com
+          </a>
+        </div>
+        <div class="text-end">
+          <p class="mb-0 text-muted">&copy; 2025 All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

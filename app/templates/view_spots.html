@@ -1,50 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>View Parking Spots</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Parking Spots for {{ lot.location_name }}</h2>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .bubble-text {
+        font-family: "Bubblegum Sans", cursive;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2e0532;
+        white-space: nowrap;
+        overflow: hidden;
+        border-right: 3px solid #310534; /* Cursor effect */
+        width: 0;
+        animation: typing 1.5s steps(20, end) forwards,
+          blink 0.75s step-end infinite;
+      }
 
-    <div class="mb-3">
-        <strong>Address:</strong> {{ lot.address }} <br>
-        <strong>PIN:</strong> {{ lot.pin_code }} <br>
-        <strong>Price per hour:</strong> ₹{{ lot.price_per_hour }}
-    </div>
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 30ch;
+        }
+      }
 
-    {% if spots %}
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-light d-flex flex-column min-vh-100">
+    <header>
+      <div
+        class="container-fluid d-flex align-items-center pt-4 ps-4 pb-4"
+        style="background-color: var(--bs-gray-200)"
+      >
+        <img
+          src="{{ url_for('static', filename='logo.png') }}"
+          class="img-fluid"
+          alt="App Logo"
+          style="max-width: 100px; border-radius: 50%"
+        />
+        <div class="ps-2 pt-2">
+          <h2
+            style="
+              color: rgba(23, 1, 21, 0.826);
+              font-family: 'Poppins', sans-serif;
+              font-style: italic;
+            "
+          >
+            ParkPal
+          </h2>
+        </div>
+        <div class="ms-auto">
+          <a
+            href="{{ url_for('dashboard.user') }}"
+            class="btn btn-light me-2 border-dark"
+            >Dashboard
+          </a>
+          <a href="{{ url_for('authentication.logout') }}" class="btn btn-dark"
+            >Logout</a
+          >
+        </div>
+      </div>
+    </header>
+    <main class="flex-grow-1">
+      <div class="container mt-5">
+        <h1 class="bubble-text ps-4 text-center">
+          Parking Spots for {{ lot.location_name }}
+        </h1>
+
+        <div class="mb-3">
+          <strong>Address:</strong> {{ lot.address }} <br />
+          <strong>PIN:</strong> {{ lot.pin_code }} <br />
+          <strong>Price per hour:</strong> ₹{{ lot.price_per_hour }}
+        </div>
+
+        {% if spots %}
+        <table class="table table-bordered table-striped">
+          <thead class="table-dark">
             <tr>
-                <th>Spot ID</th>
-                <th>Status</th>
+              <th>Spot ID</th>
+              <th>Status</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody>
             {% for spot in spots %}
             <tr>
-                <td>{{ spot.id }}</td>
-                <td>
-                    {% if spot.status == 'A' %}
-                        <span class="badge bg-success">Available</span>
-                    {% else %}
-                        <span class="badge bg-danger">Occupied</span>
-                    {% endif %}
-                </td>
+              <td>{{ spot.id }}</td>
+              <td>
+                {% if spot.status == 'A' %}
+                <span class="badge bg-success">Available</span>
+                {% else %}
+                <span class="badge bg-danger">Occupied</span>
+                {% endif %}
+              </td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
+          </tbody>
+        </table>
+        {% else %}
         <p class="text-center">No spots found for this lot.</p>
-    {% endif %}
+        {% endif %}
 
-    <div class="text-center mt-4">
-        <a href="{{ url_for('admin.view_lots') }}" class="btn btn-secondary">Back to Lots</a>
-    </div>
-</div>
-</body>
+        <div class="text-center mt-4">
+          <a href="{{ url_for('admin.view_lots') }}" class="btn btn-dark m-4"
+            >Back to Lots</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer class="py-4" style="background-color: rgba(23, 1, 21, 0.533)" ;>
+      <div
+        class="container d-flex justify-content-between align-items-center flex-wrap"
+      >
+        <div>
+          <p class="mb-1">Mail us here:</p>
+          <a
+            href="mailto:parkpal@mail.com"
+            class="text-muted text-decoration-none"
+          >
+            parkpal@mail.com
+          </a>
+        </div>
+        <div class="text-end">
+          <p class="mb-0 text-muted">&copy; 2025 All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

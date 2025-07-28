@@ -3,12 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Search Results</title>
+    <title>ParkPal</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap"
       rel="stylesheet"
     />
-     <style>
+    <style>
       .bubble-text {
         font-family: "Bubblegum Sans", cursive;
         font-size: 2rem;
@@ -27,7 +33,7 @@
           width: 0;
         }
         to {
-          width: 30ch;
+          width: 14ch;
         }
       }
 
@@ -38,8 +44,8 @@
       }
     </style>
   </head>
-  <body class="bg-light min-vh-100 flex-column d-flex">
-        <header>
+  <body class="d-flex flex-column min-vh-100">
+    <header>
       <div
         class="container-fluid d-flex align-items-center pt-4 ps-4 pb-4"
         style="background-color: var(--bs-gray-200)"
@@ -63,67 +69,42 @@
         </div>
         <div class="ms-auto">
           <a
-            href="{{ url_for('admin.dashboard') }}"
+            href="{{ url_for('authentication.login') }}"
             class="btn btn-light me-2 border-dark"
-            >Dashboard
-          </a>
-          <a href="{{ url_for('authentication.logout') }}" class="btn btn-dark"
-            >Logout</a
+            >Login</a
+          >
+          <a
+            href="{{ url_for('authentication.register') }}"
+            class="btn btn-dark"
+            >Register</a
           >
         </div>
       </div>
     </header>
-    <main class="flex-grow-1">
-      <h1 class="bubble-text text-centre ps-4">Search Results for "{{ query }}" in {{ filter_by }}</h1>
-      {% if results %}
-      <table class="table table-bordered table-striped">
-          {% if filter_by == 'user' %}
-          <thead class="table-dark">
-          <tr>
-            <th>User ID</th>
-            <th>Username</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        {% for user in results %}
-        <tr>
-          <td>{{ user.id }}</td>
-          <td>{{ user.username }}</td>
-          <td>{{ user.email }}</td>
-        </tr>
-        {% endfor %} {% elif filter_by == 'spot' %}
-        <thead class="table-dark">
-        <tr>
-          <th>Spot ID</th>
-          <th>Status</th>
-          <th>Lot ID</th>
-        </tr>
-        </thead>
-        {% for spot in results %}
-        <tr>
-          <td>{{ spot.id }}</td>
-          <td>{{ spot.status }}</td>
-          <td>{{ spot.lot_id }}</td>
-        </tr>
-        {% endfor %} {% elif filter_by == 'lot' %}
-        <thead class="table-dark"></thead>
-        <tr>
-          <th>Lot ID</th>
-          <th>Location Name</th>
-          <th>Address</th>
-        </tr>
-        </thead>
-        {% for lot in results %}
-        <tr>
-          <td>{{ lot.id }}</td>
-          <td>{{ lot.location_name }}</td>
-          <td>{{ lot.address }}</td>
-        </tr>
-        {% endfor %} {% endif %}
-      </table>
-      {% else %}
-      <p>No results found.</p>
-      {% endif %}
+
+    <main class="flex-grow-1 container pt-4">
+      <div>
+        <h1 class="bubble-text ps-4">Welcome to ParkPal!</h1>
+        <div class="row align-items-center">
+          <div class="col-md-6 text-center">
+            <p>
+              ParkPal is your one-stop solution for hassle-free parking.
+              Discover real-time availability and reserve your spot instantly.
+              Whether you're heading to work, shopping, or an event, ParkPal
+              ensures you never waste time looking for parking. Join now and
+              experience a smarter way to park!
+            </p>
+          </div>
+          <div class="col-md-6 text-center">
+            <img
+              src="{{ url_for('static', filename='background.png') }}"
+              alt="Parking Image"
+              class="img-fluid"
+              style="width: 350px"
+            />
+          </div>
+        </div>
+      </div>
     </main>
     <footer class="py-4" style="background-color: rgba(23, 1, 21, 0.533)" ;>
       <div

@@ -1,40 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Lots</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <div class=" container min-vh-100 d-flex justify-content-center align-items-center">
-    <div class="border rounded p-4 bg-white shadow-sm" style="width: 100%; max-width: 400px;">
-    <h2 class="mb-4 text-center">Edit Lots</h2>
-    <form method="POST" action="{{ url_for('admin.edit_lot',lot_id=lot.id) }}">
-        <div class="mb-3">
-            <label for="location_name" class="form-label">Location name</label>
-            <input type="text" id="location_name" name="location_name" class="form-control" required value="{{ lot.location_name }}">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-light d-flex flex-column min-vh-100">
+    <header>
+      <div
+        class="container-fluid d-flex align-items-center pt-4 ps-4 pb-4"
+        style="background-color: var(--bs-gray-200)"
+      >
+        <img
+          src="{{ url_for('static', filename='logo.png') }}"
+          class="img-fluid"
+          alt="App Logo"
+          style="max-width: 100px; border-radius: 50%"
+        />
+        <div class="ps-2 pt-2">
+          <h2
+            style="
+              color: rgba(23, 1, 21, 0.826);
+              font-family: 'Poppins', sans-serif;
+              font-style: italic;
+            "
+          >
+            ParkPal
+          </h2>
         </div>
-        <div class="mb-3">
-            <label for="address" class="form-label">Address</label>
-            <textarea type="text" id="address" name="address" class="form-control" rows="2" required>{{ lot.address }}</textarea>
+        <div class="ms-auto">
+          <a
+            href="{{ url_for('dashboard.user') }}"
+            class="btn btn-light me-2 border-dark"
+            >Dashboard
+          </a>
+          <a href="{{ url_for('authentication.logout') }}" class="btn btn-dark"
+            >Logout</a
+          >
         </div>
-        <div class="mb-3"> 
-            <label for="pin_code" class="form-label">Pin code</label>
-            <input type="text" id="pin_code" name="pin_code" class="form-control" pattern="\d{6}" required value="{{ lot.pin_code }}">
+      </div>
+    </header>
+    <main class="flex-grow-1">
+      <div
+        class="container min-vh-100 d-flex justify-content-center align-items-center"
+      >
+        <div
+          class="border rounded p-4 bg-white shadow-sm"
+          style="width: 100%; max-width: 400px"
+        >
+          <h2 class="mb-4 text-center">Edit Lots</h2>
+          <form
+            method="POST"
+            action="{{ url_for('admin.edit_lot',lot_id=lot.id) }}"
+          >
+            <div class="mb-3">
+              <label for="location_name" class="form-label"
+                >Location name</label
+              >
+              <input
+                type="text"
+                id="location_name"
+                name="location_name"
+                class="form-control"
+                required
+                value="{{ lot.location_name }}"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <textarea
+                type="text"
+                id="address"
+                name="address"
+                class="form-control"
+                rows="2"
+                required
+              >
+{{ lot.address }}</textarea
+              >
+            </div>
+            <div class="mb-3">
+              <label for="pin_code" class="form-label">Pin code</label>
+              <input
+                type="text"
+                id="pin_code"
+                name="pin_code"
+                class="form-control"
+                pattern="\d{6}"
+                required
+                value="{{ lot.pin_code }}"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="price_per_hour" class="form-label"
+                >Price per hour (₹)</label
+              >
+              <input
+                type="number"
+                step="0.1"
+                id="price_per_hour"
+                name="price_per_hour"
+                class="form-control"
+                required
+                value="{{ lot.price_per_hour }}"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="max_spots" class="form-label"
+                >Maximum number of spots</label
+              >
+              <input
+                type="number"
+                id="max_spots"
+                name="max_spots"
+                class="form-control"
+                required
+                value="{{ lot.max_spots }}"
+              />
+            </div>
+            <button type="submit" class="btn btn-light border-dark">
+              Update Lot
+            </button>
+            <a href="{{ url_for('admin.view_lots') }}" class="btn btn-dark"
+              >Cancel</a
+            >
+          </form>
         </div>
-        <div class="mb-3">
-            <label for="price_per_hour" class="form-label">Price per hour (₹)</label>
-            <input type="number" step="0.1" id="price_per_hour" name="price_per_hour" class="form-control" required value="{{ lot.price_per_hour }}">
+      </div>
+    </main>
+    <footer class="py-4" style="background-color: rgba(23, 1, 21, 0.533)" ;>
+      <div
+        class="container d-flex justify-content-between align-items-center flex-wrap"
+      >
+        <div>
+          <p class="mb-1">Mail us here:</p>
+          <a
+            href="mailto:parkpal@mail.com"
+            class="text-muted text-decoration-none"
+          >
+            parkpal@mail.com
+          </a>
         </div>
-        <div class="mb-3">
-            <label for="max_spots" class="form-label">Maximum number of spots</label>
-            <input type="number" id="max_spots" name="max_spots" class="form-control" required value="{{ lot.max_spots }}">
+        <div class="text-end">
+          <p class="mb-0 text-muted">&copy; 2025 All rights reserved.</p>
         </div>
-         <button type="submit" class="btn btn-primary">Update Lot</button>
-        <a href="{{ url_for('admin.view_lots') }}" class="btn btn-secondary">Cancel</a>
-    </form>
-    </div>
-    </div>
-</body>
+      </div>
+    </footer>
+  </body>
 </html>

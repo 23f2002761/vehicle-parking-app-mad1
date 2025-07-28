@@ -26,4 +26,7 @@ def create_app():
     from app.routes.user_routes import user_bp
     app.register_blueprint(user_bp)
 
+    from app.routes.__init__ import landing_bp
+    app.register_blueprint(landing_bp)
+
     return app
