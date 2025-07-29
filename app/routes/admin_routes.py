@@ -27,7 +27,7 @@ def create_lot():
             db.session.add(spot)
         db.session.commit()
 
-        flash('Parking lot and its parking spot are created')
+        flash('Parking lot and its parking spot are created','success')
         return redirect(url_for('admin.view_lots'))
 
     return render_template('create_lot.html')
@@ -59,9 +59,25 @@ def edit_lot(lot_id):
                     db.session.add(new_spot)
 
             elif difference < 0:
-                available_spots = Parkingspot.query.filter_by(lot_id=lot.id, status='A').limit(abs(difference)).all()
+
+                occupied_spots = Parkingspot.query.filter_by(lot_id=lot.id, status='O').count()
+                if new_max_spots < occupied_spots:  # ✅ Prevent invalid reduction
+                    flash(f"Cannot reduce max spots below {occupied_spots}. Some spots are occupied.", "danger")
+                    return redirect(url_for('admin.view_lots'))
+
+                available_spots = (
+    db.session.query(Parkingspot)
+    .filter(
+        Parkingspot.lot_id == lot.id,
+        Parkingspot.status == 'A',
+        ~Parkingspot.reservations.any() 
+    )
+    .limit(abs(difference))
+    .all()
+)
+
                 if len(available_spots) < abs(difference):
-                    flash('The spots cannot be reduced as the available spots are not enough.')
+                    flash('The spots cannot be reduced as the available spots are not enough.','danger')
                     return redirect(url_for('admin.view_lots'))
 
                 for spot in available_spots:
@@ -69,7 +85,7 @@ def edit_lot(lot_id):
 
             lot.max_spots = new_max_spots
         db.session.commit() 
-        flash('The Lot has been updated')
+        flash('The Lot has been updated','success')
         return redirect(url_for('admin.view_lots'))
 
     return render_template('edit_lot.html', lot=lot)
@@ -88,7 +104,7 @@ def delete_lot(lot_id):
 
     db.session.delete(lot)
     db.session.commit()
-    flash("The Parking lot is deleted successfully.")
+    flash("The Parking lot is deleted successfully.",'info')
     return redirect(url_for('admin.view_lots'))
 
 @admin_bp.route('/view_spots/<int:lot_id>')
