@@ -68,7 +68,10 @@
               <td>{{ res.user.username }}</td>
               <td>{{ res.spot.lot.location_name }}</td>
               <td>{{ res.spot.id }}</td>
-              <td>{{ res.start_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+              <td>
+                {% if res.start_time %} {{ res.start_time.strftime('%Y-%m-%d
+                %H:%M:%S') }} {% else %} Not started {% endif %}
+              </td>
               <td>
                 {% if res.end_time %} {{ res.end_time.strftime('%Y-%m-%d
                 %H:%M:%S') }} {% else %} - {% endif %}

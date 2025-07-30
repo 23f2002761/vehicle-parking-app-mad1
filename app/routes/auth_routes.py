@@ -14,7 +14,7 @@ def register():
 #Checking if the user laready exists
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            flash('This email already has an account. You can Login')
+            flash('This email already has an account. You can Login','info')
             return redirect(url_for('authentication.login'))
 #Now adding the user to the database
         user = User(full_name=full_name, username=username ,email=email, password=password)
