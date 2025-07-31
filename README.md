@@ -1,27 +1,59 @@
-# vehicle-parking-app-mad1
-A multi-user parking management system using Flask and SQLite. Users can book 4-wheeler parking spots, and the admin can manage parking lots, users, and reservations.
+# Vehicle Parking App
 
-## Technologies Used
+A Flask-based web application for managing parking lots, reservations, and users.  
+Features include:
 
-- Flask (Backend)
-- SQLite (Database)
-- HTML, CSS, Bootstrap, Jinja2 (Frontend)
+- **User Dashboard**: Reserve parking slots, view parking history.
+- **Admin Dashboard**: Manage parking lots, slots, users, and reservations.
 
-## Issues Faced & Resolved (Milestone 1)
+---
 
-1. **Issue:** I got confused initially about how the models connect to the database. It took me some time to understand how SQLAlchemy maps Python classes to tables.  
-   **Resolution:** I went through examples and slowly and gradually understood it.
+## ✅ Features
 
-2. **Issue:** I couldn't understand how to use `ForeignKey` and `db.relationship()`. I wasn’t sure which table should have the foreign key and how `.relationship` works.  
-   **Resolution:** After understanding how one-to-many and many-to-one relationships work, I was able to implement it properly.
+- Secure Login & Registration (hashed passwords)
+- Role-based dashboards (Admin/User)
+- Parking lot and slot management
+- Reservation history & cost calculation
+- Search functionality for Admin
 
-##  Issues Faced & Resolved (Milestone 2)
+---
 
-1. **Issue:** I wasn’t confident with how SQLAlchemy ORM works, especially while creating the `User` model. I couldn't understand how classes connect to tables or how columns are actually defined.  
-   **Resolution:** I revised the ORM concepts properly. Going through the User model line by line helped a lot, and now it’s much clearer.
+## 🔧 Requirements
 
-2. **Issue:** I didn’t know how to do password hashing properly. I wasn’t sure how `generate_password_hash` and `check_password_hash` actually worked.  
-   **Resolution:** I understood how to use Werkzeug’s functions for hashing and checking passwords.
+- Python 3.8+
+- pip (Python package manager)
+- Virtual Environment (recommended)
 
-3. **Issue:** I got confused while structuring the auth routes using Blueprints. I wasn’t sure how to separate them and connect everything back to the main app.  
-   **Resolution:** After trying a few times, I figured out how to set up the `authentication_bp` and register it correctly in the app.
+---
+
+## 📦 Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/vehicle-parking-app.git
+   cd vehicle-parking-app
+   ```
+2. **Create and activate a virtual environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate   # On Windows:venv\Scripts\activate
+   ```
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## ▶️ Run the Application
+
+1. **Set environment variables**
+   ```bash
+   export FLASK_APP=main.py       # On Windows: set FLASK_APP=main.py
+   export FLASK_ENV=development   # Enables debug mode
+   ```
+2. Initialize the database
+   ```bash
+   flask db init
+   flask db migrate -m "Initial migration"
+   flask db upgrade
+   ```
+3. Run the file using python main.py
