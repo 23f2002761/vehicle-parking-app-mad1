@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: Vehicle Parking App API
+  version: 1.0.0
+  description: API documentation for Vehicle Parking App
+servers:
+  - url: http://localhost:5000
+    description: Local development server
+paths: 
+  /admin/create_lot:
+    post:
+      summary: Create a new parking lot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                location_name:
+                  type: string
+                address:
+                  type: string
+                pin_code:
+                  type: string
+                price_per_hour:
+                  type: number
+                max_spots:
+                  type: integer
+      responses:
+        '201':
+          description: Parking lot created successfully
+  /admin/edit_lots/{lot_id}:
+    post:
+      summary: Update a parking lot
+      parameters:
+        - in: path
+          name: lot_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the parking lot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                location_name:
+                  type: string
+                address:
+                  type: string
+                pin_code:
+                  type: string
+                price_per_hour:
+                  type: number
+                max_spots:
+                  type: integer
+      responses:
+        '200':
+          description: Parking lot updated successfully
+        '400':
+          description: Invalid data or cannot reduce spots due to active reservations
+        '404':
+          description: Lot not found
+  /admin/lots/{lot_id}:
+    post:
+      summary: Delete a parking lot
+      parameters:
+        - in: path
+          name: lot_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Parking lot deleted successfully
+        '400':
+          description: Cannot delete because some spots are occupied
+        '404':
+          description: Lot not found
+  /register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '201':
+          description: User registered successfully
+        '400':
+          description: Email already exists
+  /login:
+    post:
+      summary: Login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Login successful
+        '401':
+          description: Invalid credentials
+  /user/reserve_lot/{lot_id}:
+    post:
+      summary: Reserve a parking spot
+      parameters:
+        - in: path
+          name: lot_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the parking lot where the user wants to reserve a spot.
+      responses:
+        '200':
+          description: Spot reserved successfully
+        '400':
+          description: No available spots or user already has an active reservation
+        '401':
+          description: User not logged in
+        '404':
+          description: Lot not found
+  /user/occupy/{reservation_id}:
+    post:
+      summary: Occupy a reserved parking spot
+      parameters:
+        - in: path
+          name: reservation_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the reservation to occupy
+      responses:
+        '200':
+          description: Spot occupied successfully
+        '400':
+          description: Reservation is not active or already occupied
+        '401':
+          description: User not logged in
+        '404':
+          description: Reservation not found
+  /user/parking_history:
+    get:
+      summary: Get parking history of the logged-in user
+      responses:
+        '200':
+          description: Parking history retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reservation_id:
+                      type: integer
+                    status:
+                      type: string
+                    duration:
+                      type: number
+                    cost:
+                      type: number
+        '401':
+          description: User not logged in
+  /user/reservations/{reservation_id}/release:
+    post:
+      summary: Release a parking spot
+      parameters:
+        - in: path
+          name: reservation_id
+          required: true
+          schema:
+            type: integer
+          description: ID of the reservation to be released
+      responses:
+        '200':
+          description: Spot released successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  duration_hours:
+                    type: number
+                  cost:
+                    type: number
+        '400':
+          description: Reservation is not active
+        '401':
+          description: User not logged in
+        '404':
+          description: Reservation not found

@@ -123,18 +123,3 @@ def view_users():
 def view_all_reservations():
     reservations = Reservation.query.order_by(Reservation.start_time.desc()).all()
     return render_template('admi_view_reservation.html', reservations=reservations)
-
-@admin_bp.route('/search', methods=['GET'])
-def search():
-    query = request.args.get('details')
-    filter_by = request.args.get('type')
-
-    results = []
-    if filter_by == 'user':
-        results = User.query.filter(User.username.ilike(f"%{query}%")).all()
-    elif filter_by == 'spot':
-        results = Parkingspot.query.filter(Parkingspot.id == int(query)).all()
-    elif filter_by == 'lot':
-        results = Parkinglot.query.filter(Parkinglot.location_name.ilike(f"%{query}%")).all()
-
-    return render_template('admin_search.html', results=results, filter_by=filter_by, query=query)
